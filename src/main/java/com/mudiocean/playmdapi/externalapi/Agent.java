@@ -1,7 +1,6 @@
 package com.mudiocean.playmdapi.externalapi;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,7 +23,7 @@ public class Agent {
     // post method for login : https://playmd.xmd.co.kr/api/member/do_login
     // get method for get info : https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr
     static final ArrayList<String> cookieNames = new ArrayList<>(Arrays.asList("USERINFO", "xmd_session", "XDLSK", "XDTSK"));
-    Map<String, String> cookieMap = new HashMap<>();
+    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
 
     RestTemplate rt = new RestTemplate();
 
@@ -44,7 +41,7 @@ public class Agent {
 
         // TODO : get from env
 
-        body.put("CMEMCD", context.getEnvironment().getProperty("CMEMCD"));
+        body.put("CMEMCD", "jnbc");
         body.put("CMEMPWD", "jnbc");
         body.put("CUSRID", "master06");
         body.put("CUSRPWD", "0000");
@@ -67,8 +64,8 @@ public class Agent {
     public JsonNode getItem(String I_AGTCD, String I_COND) throws Exception {
         // TODO : validate I_AGTCD, I_COND
 
+        // today "20231023"
         String I_DATE = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        ; // "20231023"
         String I_TAG = "0"; // TODO : what is this?
         String I_USRGUBN = "1"; // TODO : what is this?
         String url = "https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr?I_AGTCD=" + I_AGTCD + "&I_COND=" + I_COND + "&I_DATE=" + I_DATE + "&I_TAG=" + I_TAG + "&I_USRGUBN=" + I_USRGUBN;
