@@ -24,7 +24,7 @@ public class Agent {
     // get method for get info : https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr
     static final ArrayList<String> cookieNames = new ArrayList<>(Arrays.asList("USERINFO", "xmd_session", "XDLSK", "XDTSK"));
     //    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
-    Map<String, String> cookieMap = new HashMap<>();
+    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
 
     RestTemplate rt = new RestTemplate();
 
