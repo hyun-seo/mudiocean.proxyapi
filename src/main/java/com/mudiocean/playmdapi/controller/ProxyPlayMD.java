@@ -26,6 +26,7 @@ public class ProxyPlayMD {
             JsonNode data = agent.getItem(storecode, keyword);
             return data.toString();
         } catch (Exception e) {
+            System.out.println(e);
             throw new RuntimeException(e);
         }
     }

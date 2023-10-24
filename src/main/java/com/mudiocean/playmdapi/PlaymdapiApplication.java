@@ -25,6 +25,7 @@ public class PlaymdapiApplication {
             System.out.println(today);
             Environment env = context.getEnvironment();
             System.out.println(Arrays.toString(env.getActiveProfiles()));
+            System.out.println(env.getProperty("CMEMCD"));
         };
     }
 

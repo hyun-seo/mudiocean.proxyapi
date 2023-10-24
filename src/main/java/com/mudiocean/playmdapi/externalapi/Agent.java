@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,7 +23,8 @@ public class Agent {
     // post method for login : https://playmd.xmd.co.kr/api/member/do_login
     // get method for get info : https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr
     static final ArrayList<String> cookieNames = new ArrayList<>(Arrays.asList("USERINFO", "xmd_session", "XDLSK", "XDTSK"));
-    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
+    //    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
+    Map<String, String> cookieMap = new HashMap<>();
 
     RestTemplate rt = new RestTemplate();
 
@@ -31,20 +32,25 @@ public class Agent {
     static final String url_getitem = "https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr";
     static final int MAX_RETRY = 3;
 
+    private final ApplicationContext context;
+    private final Environment env;
+
     @Autowired
-    ApplicationContext context;
+    Agent(ApplicationContext context) {
+        this.context = context;
+        this.env = context.getEnvironment();
+    }
 
     private void login() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         Map<String, String> body = new HashMap<>();
 
-        // TODO : get from env
+        body.put("CMEMCD", env.getProperty("CMEMCD"));
+        body.put("CMEMPWD", env.getProperty("CMEMPWD"));
+        body.put("CUSRID", env.getProperty("CUSRID"));
+        body.put("CUSRPWD", env.getProperty("CUSRPWD"));
 
-        body.put("CMEMCD", "jnbc");
-        body.put("CMEMPWD", "jnbc");
-        body.put("CUSRID", "master06");
-        body.put("CUSRPWD", "0000");
 
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
         HttpEntity<String> response = rt.exchange(url_login, HttpMethod.POST, request, String.class);
@@ -72,7 +78,7 @@ public class Agent {
 
         // retry login TODO : make it better
         int retry = 0;
-        while(retry<MAX_RETRY){
+        while (retry < MAX_RETRY) {
             try {
                 HttpHeaders headers = getCookieHeader();
                 HttpEntity<String> request = new HttpEntity<>(headers);
@@ -81,6 +87,7 @@ public class Agent {
             } catch (Exception e) {
                 retry++;
                 sleep(500);
+                System.out.println(e);
             }
         }
 
@@ -117,10 +124,4 @@ public class Agent {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readTree(jsonstr);
     }
-
-    @Bean
-    public Agent getAgent() {
-        return new Agent();
-    }
-
 }
