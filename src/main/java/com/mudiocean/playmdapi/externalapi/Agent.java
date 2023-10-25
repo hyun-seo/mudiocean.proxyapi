@@ -24,13 +24,14 @@ public class Agent {
     // get method for get info : https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr
     static final ArrayList<String> cookieNames = new ArrayList<>(Arrays.asList("USERINFO", "xmd_session", "XDLSK", "XDTSK"));
     //    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
-    Map<String, String> cookieMap = Collections.synchronizedMap(new HashMap<>());
+    Map<String, String> cookieMap = new HashMap<>();
+
 
     RestTemplate rt = new RestTemplate();
 
     static final String url_login = "https://playmd.xmd.co.kr/api/member/do_login";
     static final String url_getitem = "https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr";
-    static final int MAX_RETRY = 3;
+    static final int MAX_RETRY = 1;
     @Autowired
     private ApplicationContext context;
     @Autowired
@@ -52,13 +53,18 @@ public class Agent {
         HttpHeaders responseHeader = response.getHeaders();
         List<String> cookies = responseHeader.get("Set-Cookie");
         assert cookies != null;
+
+        // cookiemap update with atomic operation
+        Map<String, String> _cookieMap = new HashMap<>();
+
         for (String cookie : cookies) {
             String[] cookieValue = cookie.split(";")[0].split("=");
 
             if (cookieNames.contains(cookieValue[0])) {
-                cookieMap.put(cookieValue[0], cookieValue[1]);
+                _cookieMap.put(cookieValue[0], cookieValue[1]);
             }
         }
+        cookieMap = _cookieMap;
     }
 
 
@@ -81,7 +87,7 @@ public class Agent {
                 return parseListItem(response.getBody());
             } catch (Exception e) {
                 retry++;
-                sleep(500);
+//                sleep(500);
                 System.out.println(e);
             }
         }
