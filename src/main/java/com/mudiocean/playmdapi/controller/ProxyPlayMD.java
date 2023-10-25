@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProxyPlayMD {
 
-    private final Agent agent;
-
     @Autowired
-    public ProxyPlayMD(Agent agent) {
-        this.agent = agent;
-    }
+    private Agent agent;
+
 
     @GetMapping("/playmd")
     public String getPlayMD(@RequestParam(value = "storecode", defaultValue = "02") String storecode,

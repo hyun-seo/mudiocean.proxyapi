@@ -31,15 +31,10 @@ public class Agent {
     static final String url_login = "https://playmd.xmd.co.kr/api/member/do_login";
     static final String url_getitem = "https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr";
     static final int MAX_RETRY = 3;
-
-    private final ApplicationContext context;
-    private final Environment env;
-
     @Autowired
-    Agent(ApplicationContext context) {
-        this.context = context;
-        this.env = context.getEnvironment();
-    }
+    private ApplicationContext context;
+    @Autowired
+    private Environment env;
 
     private void login() throws Exception {
         HttpHeaders headers = new HttpHeaders();
