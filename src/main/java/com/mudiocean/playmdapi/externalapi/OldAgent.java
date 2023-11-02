@@ -18,7 +18,7 @@ import java.util.*;
 import static java.lang.Thread.sleep;
 
 @Component
-public class Agent {
+public class OldAgent {
     // external api call to https://playmd.xmd.co.kr/
     // post method for login : https://playmd.xmd.co.kr/api/member/do_login
     // get method for get info : https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr
