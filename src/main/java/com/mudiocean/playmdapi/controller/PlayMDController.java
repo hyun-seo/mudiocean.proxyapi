@@ -20,13 +20,13 @@ public class PlayMDController {
 
     @Autowired
     @Qualifier("playMDRestSessionClientImp")
-    PlayMDRestSessionClientImp restSessionClient;
+    RestSessionClient restSessionClient;
 
 
 
     @GetMapping("/api/v2/playmd")
     public String getPlayMD(@RequestParam(value = "storecode", defaultValue = "02") String storecode,
-                            @RequestParam(value = "keyword", defaultValue = "") String keyword
+                            @RequestParam(value = "keyword", defaultValue = "js") String keyword
     ) {
         try {
             String url = "https://playmd.xmd.co.kr/api/xcom/xcom_codbarpr";
@@ -35,7 +35,7 @@ public class PlayMDController {
             params.add("I_TAG", "0");
             params.add("I_USRGUBN", "1");
             params.add("I_AGTCD", storecode);
-            params.add("I_COND", "js");
+            params.add("I_COND", keyword);
 
             HttpEntity<String> response = restSessionClient.callGet(url, params, null);
             return response.getBody();
