@@ -1,4 +1,4 @@
-package com.mudiocean.playmdapi.externalapi;
+package com.mudiocean.playmdapi._dell;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,7 +17,7 @@ import java.util.*;
 
 import static java.lang.Thread.sleep;
 
-@Component
+//@Component
 public class OldAgent {
     // external api call to https://playmd.xmd.co.kr/
     // post method for login : https://playmd.xmd.co.kr/api/member/do_login

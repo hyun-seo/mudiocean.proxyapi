@@ -1,20 +1,19 @@
-package com.mudiocean.playmdapi.controller;
+package com.mudiocean.playmdapi._dell;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.mudiocean.playmdapi.externalapi.OldAgent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+//@RestController
 public class ProxyPlayMD {
 
-    @Autowired
+//    @Autowired
     private OldAgent agent;
 
 
-    @GetMapping("/playmd")
+//    @GetMapping("/playmd")
     public String getPlayMD(@RequestParam(value = "storecode", defaultValue = "02") String storecode,
                             @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {

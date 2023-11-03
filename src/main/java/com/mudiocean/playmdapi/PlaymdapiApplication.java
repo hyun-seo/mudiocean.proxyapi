@@ -1,5 +1,6 @@
 package com.mudiocean.playmdapi;
 
+import com.mudiocean.playmdapi.externalapi.PlayMDRestSessionClientImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,10 @@ public class PlaymdapiApplication {
 
     @Autowired
     ApplicationContext context;
+
+    @Autowired
+    PlayMDRestSessionClientImp restSessionClient;
+
     @Bean
     ApplicationRunner init() {
         return args -> {
@@ -25,7 +30,9 @@ public class PlaymdapiApplication {
             System.out.println(today);
             Environment env = context.getEnvironment();
             System.out.println(Arrays.toString(env.getActiveProfiles()));
-            System.out.println(env.getProperty("CMEMCD"));
+//            System.out.println(env.getProperty("CMEMCD"));
+//            restSessionClient.login();
+
         };
     }
 
